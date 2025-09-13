@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mohamed Reda Touil’s Log Book</title>
+  
+  
+  <link href="https://reda-touil.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://reda-touil.github.io/"/>
+  <updated>2025-09-13T23:00:00.000Z</updated>
+  <id>https://reda-touil.github.io/</id>
+  
+  <author>
+    <name>Mohamed Reda Touil</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Model Context Protocol (MCP)</title>
+    <link href="https://reda-touil.github.io/2025/09/14/Model-Context-Protocol-MCP/"/>
+    <id>https://reda-touil.github.io/2025/09/14/Model-Context-Protocol-MCP/</id>
+    <published>2025-09-13T23:00:00.000Z</published>
+    <updated>2025-09-13T23:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>A Protocol for Simplifying LLM Application Development.</p><h2 id="Why-MCP"><a href="#Why-MCP" class="headerlink" title="Why MCP?"></a>Why MCP?</h2><p>Before MCP, most LLM apps rebuilt the same glue:</p><ul><li><strong>Resource collection</strong> — where to pull context from (files, databases, calendars, screens, etc.)</li><li><strong>Tool wiring</strong> — how to call external services (search, code exec, web fetch, RAG, …)</li><li><strong>Prompt shape</strong> — how to consistently describe resources and tools to the model</li></ul><p>That’s brittle and expensive. MCP <strong>standardizes</strong> the surface so apps can:</p><ol><li>discover what data and tools exist, 2) describe them to the model, and 3) route tool calls—without app-specific adapters.</li></ol><h2 id="Core-concepts"><a href="#Core-concepts" class="headerlink" title="Core concepts"></a>Core concepts</h2><ul><li><strong>Resources</strong> — things you can <em>read</em> to build context (files, DB tables, dashboards, device state…).<br>Each resource has an <strong>ID</strong>, human <strong>description</strong>, optional <strong>schema&#x2F;metadata</strong>, and a way to <strong>fetch</strong> it.</li><li><strong>Tools</strong> — actions the model can call (search, translate, execute, query DB, open URL…).<br>A tool has a <strong>name</strong>, <strong>description</strong>, <strong>arguments schema</strong>, and effect flags (e.g., “reads external data”, “mutates state”).</li><li><strong>Prompts</strong> — reusable prompt snippets MCP servers can publish (e.g., “SQL safety checklist”) for high-quality, repeatable guidance.</li></ul><h2 id="Mental-model"><a href="#Mental-model" class="headerlink" title="Mental model"></a>Mental model</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LLM app  ─►  MCP client  ─►  (one or more) MCP servers</span><br><span class="line">                         ├─ Resources (discover/fetch)</span><br><span class="line">                         └─ Tools      (list/execute)</span><br></pre></td></tr></table></figure><p>Your app speaks <strong>only MCP</strong>. Servers implement whatever backends they want.</p><h2 id="Resource-examples"><a href="#Resource-examples" class="headerlink" title="Resource examples"></a>Resource examples</h2><p>MCP doesn’t force one URI scheme; servers should expose stable, URI-like IDs:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file:///home/reda/notes/mcp_todos.md</span><br><span class="line">postgres://prod/orders?table=orders_2025</span><br><span class="line">screen://localhost/display1</span><br></pre></td></tr></table></figure><p>Minimal resource descriptor (illustrative):</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;file:///home/reda/notes/mcp_todos.md&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;MCP TODOs&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Personal notes about tasks and follow-ups.&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;mime&quot;</span><span class="punctuation">:</span> <span class="string">&quot;text/markdown&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">4821</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure><p>Fetching returns a payload (text or bytes) plus metadata:</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;file:///home/reda/notes/mcp_todos.md&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;content&quot;</span><span class="punctuation">:</span> <span class="string">&quot;# TODO\n- write MCP post\n- push to blog\n&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;etag&quot;</span><span class="punctuation">:</span> <span class="string">&quot;b2f9c3&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;updated_at&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2025-09-14T10:21:00Z&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure><h2 id="Tool-examples"><a href="#Tool-examples" class="headerlink" title="Tool examples"></a>Tool examples</h2><p>A tool is described once; the model can then call it through the MCP client.</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;web_search&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Search the web and return top snippets.&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;arguments&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;string&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Search query&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;top_k&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;integer&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;default&quot;</span><span class="punctuation">:</span> <span class="number">5</span><span class="punctuation">,</span> <span class="attr">&quot;minimum&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span> <span class="attr">&quot;maximum&quot;</span><span class="punctuation">:</span> <span class="number">20</span> <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;effects&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;reads_external_data&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;mutates_state&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure><p>Another: safe SQL query tool —</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;query_orders&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Run a parameterized query on the Orders view.&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;arguments&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;from&quot;</span><span class="punctuation">:</span>   <span class="punctuation">&#123;</span> <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;string&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;format&quot;</span><span class="punctuation">:</span> <span class="string">&quot;date&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;to&quot;</span><span class="punctuation">:</span>     <span class="punctuation">&#123;</span> <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;string&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;format&quot;</span><span class="punctuation">:</span> <span class="string">&quot;date&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;status&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;string&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;enum&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;open&quot;</span><span class="punctuation">,</span> <span class="string">&quot;shipped&quot;</span><span class="punctuation">,</span> <span class="string">&quot;canceled&quot;</span><span class="punctuation">]</span> <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;effects&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;reads_external_data&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span> <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure><h2 id="Typical-client-flow"><a href="#Typical-client-flow" class="headerlink" title="Typical client flow"></a>Typical client flow</h2><ol><li><p><strong>Discover</strong> — list resources&#x2F;tools from each MCP server.</p></li><li><p><strong>Select</strong> — for a user query, choose relevant resources (by rules or retrieval) and a small tool set.</p></li><li><p><strong>Describe</strong> — build a compact <strong>context card</strong> for the model:</p><ul><li>names + short descriptions of selected resources&#x2F;tools</li><li>any safety constraints &#x2F; rate limits</li></ul></li><li><p><strong>Call the model</strong> — provide the user message + context card.</p></li><li><p><strong>Route tool calls</strong> — execute via the MCP client; capture results (including errors) and stream them back to the model.</p></li><li><p><strong>Answer</strong> — return final text; optionally attach citations (resource IDs) and traces.</p></li></ol><h2 id="Prompt-snippets"><a href="#Prompt-snippets" class="headerlink" title="Prompt snippets"></a>Prompt snippets</h2><p>Servers can publish helpful prompts the client can insert:</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;sql_safety_prompt&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Safety checklist for SQL generation&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;arguments&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure><p>Example usage in a system message:</p><blockquote><p>When using <code>query_orders</code>, never select <code>*</code>. Only named columns and limit to 200 rows.<br>Use prepared parameters <code>&#123;from&#125;</code>, <code>&#123;to&#125;</code>, <code>&#123;status&#125;</code>.</p></blockquote><h2 id="Minimal-“Hello-MCP”-pseudo-code"><a href="#Minimal-“Hello-MCP”-pseudo-code" class="headerlink" title="Minimal “Hello MCP” (pseudo-code)"></a>Minimal “Hello MCP” (pseudo-code)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">user = <span class="string">&quot;Show shipped orders this week and summarize revenue.&quot;</span></span><br><span class="line">servers = mcp.discover()                      <span class="comment"># list MCP servers</span></span><br><span class="line">resources = mcp.search_resources(<span class="string">&quot;orders&quot;</span>)    <span class="comment"># pick relevant resources</span></span><br><span class="line">tools = [<span class="string">&quot;query_orders&quot;</span>]                      <span class="comment"># expose a small, safe toolset</span></span><br><span class="line"></span><br><span class="line">context_card = &#123;</span><br><span class="line">  <span class="string">&quot;resources&quot;</span>: [r.brief() <span class="keyword">for</span> r <span class="keyword">in</span> resources],</span><br><span class="line">  <span class="string">&quot;tools&quot;</span>: [mcp.describe_tool(t) <span class="keyword">for</span> t <span class="keyword">in</span> tools],</span><br><span class="line">  <span class="string">&quot;prompts&quot;</span>: [mcp.get_prompt(<span class="string">&quot;sql_safety_prompt&quot;</span>)]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">reply = llm.chat(</span><br><span class="line">  system = build_system(context_card),</span><br><span class="line">  user   = user,</span><br><span class="line">  tools  = tools</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> call <span class="keyword">in</span> reply.tool_calls:</span><br><span class="line">  res = mcp.run(call.name, call.args)</span><br><span class="line">  reply = llm.continue_with_tool_result(call.<span class="built_in">id</span>, res)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(reply.final_text)</span><br></pre></td></tr></table></figure><h2 id="Design-tips"><a href="#Design-tips" class="headerlink" title="Design tips"></a>Design tips</h2><ul><li><strong>Keep the context small.</strong> Prefer brief descriptors + on-demand fetching.</li><li><strong>Constrain tools.</strong> Expose only what’s needed per turn; validate arguments against the schema.</li><li><strong>Trace everything.</strong> Log resource IDs, tool calls, and inputs&#x2F;outputs for reproducibility.</li><li><strong>Fail loudly.</strong> Propagate errors to the model with clear messages; retry selectively.</li><li><strong>Cache.</strong> De-duplicate resource fetches by <code>etag</code> or hash.</li></ul><h2 id="Conclusions"><a href="#Conclusions" class="headerlink" title="Conclusions"></a>Conclusions</h2><p>MCP reduces bespoke glue in LLM apps. You standardize how you <strong>discover</strong> data&#x2F;tools, <strong>describe</strong> them to the model, and <strong>route</strong> tool calls. The result is simpler apps, safer execution paths, and easier portability across backends.</p><h2 id="Next-steps-what-I’ll-build"><a href="#Next-steps-what-I’ll-build" class="headerlink" title="Next steps (what I’ll build)"></a>Next steps (what I’ll build)</h2><ul><li><p>A small MCP server exposing:</p><ul><li><code>orders</code> Postgres view as resources</li><li><code>query_orders</code> and <code>web_search</code> tools</li></ul></li><li><p>A client that prints a full trace (resource IDs, tool args, response times)</p></li><li><p>Blog follow-ups: security boundaries, rate-limits, and evals for tool-use</p></li></ul><h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul><li>Official docs: <a href="https://modelcontextprotocol.io/docs/getting-started/intro">https://modelcontextprotocol.io/docs/getting-started/intro</a></li></ul>]]></content>
+    
+    
+    <summary type="html">A Protocol for Simplifying LLM Application Development</summary>
+    
+    
+    
+    <category term="blog" scheme="https://reda-touil.github.io/categories/blog/"/>
+    
+    
+    <category term="MCP" scheme="https://reda-touil.github.io/tags/MCP/"/>
+    
+    <category term="Model Context Protocol" scheme="https://reda-touil.github.io/tags/Model-Context-Protocol/"/>
+    
+    <category term="LLM" scheme="https://reda-touil.github.io/tags/LLM/"/>
+    
+    <category term="tools" scheme="https://reda-touil.github.io/tags/tools/"/>
+    
+    <category term="context" scheme="https://reda-touil.github.io/tags/context/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Demo Project — Real-Time Image Segmentation</title>
+    <link href="https://reda-touil.github.io/2025/09/14/demo-project/"/>
+    <id>https://reda-touil.github.io/2025/09/14/demo-project/</id>
+    <published>2025-09-13T23:00:00.000Z</published>
+    <updated>2025-09-13T23:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>A short summary of the project. What it does, why it’s interesting, and the result.</p><span id="more"></span><h3 id="Highlights"><a href="#Highlights" class="headerlink" title="Highlights"></a>Highlights</h3><ul><li>Lightweight PyTorch model</li><li>Real-time inference on CPU</li><li>Simple REST API wrapper</li></ul><h3 id="Tech-Stack"><a href="#Tech-Stack" class="headerlink" title="Tech Stack"></a>Tech Stack</h3><p>PyTorch · FastAPI · ONNX Runtime</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;A short summary of the project. What it does, why it’s interesting, and the result.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="project" scheme="https://reda-touil.github.io/categories/project/"/>
+    
+    
+    <category term="computer vision" scheme="https://reda-touil.github.io/tags/computer-vision/"/>
+    
+    <category term="pytorch" scheme="https://reda-touil.github.io/tags/pytorch/"/>
+    
+    <category term="segmentation" scheme="https://reda-touil.github.io/tags/segmentation/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://reda-touil.github.io/2025/09/13/hello-world/"/>
+    <id>https://reda-touil.github.io/2025/09/13/hello-world/</id>
+    <published>2025-09-12T23:40:46.704Z</published>
+    <updated>2025-09-12T23:40:46.704Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Essay: Why Imperfect Action Beats Perfect Inaction</title>
+    <link href="https://reda-touil.github.io/2025/09/12/first-essay/"/>
+    <id>https://reda-touil.github.io/2025/09/12/first-essay/</id>
+    <published>2025-09-11T23:00:00.000Z</published>
+    <updated>2025-09-13T00:01:57.461Z</updated>
+    
+    <content type="html"><![CDATA[<p>Your essay text…</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Your essay text…&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="essay" scheme="https://reda-touil.github.io/categories/essay/"/>
+    
+    
+    <category term="thoughts" scheme="https://reda-touil.github.io/tags/thoughts/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Reading Notes: A Paper I Like</title>
+    <link href="https://reda-touil.github.io/2025/09/12/first-reading/"/>
+    <id>https://reda-touil.github.io/2025/09/12/first-reading/</id>
+    <published>2025-09-11T23:00:00.000Z</published>
+    <updated>2025-09-13T00:01:57.463Z</updated>
+    
+    <content type="html"><![CDATA[<p>Your reading notes…</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Your reading notes…&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="reading" scheme="https://reda-touil.github.io/categories/reading/"/>
+    
+    
+    <category term="notes" scheme="https://reda-touil.github.io/tags/notes/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Welcome to Reda&#39;s Log Book</title>
+    <link href="https://reda-touil.github.io/2025/09/12/welcome/"/>
+    <id>https://reda-touil.github.io/2025/09/12/welcome/</id>
+    <published>2025-09-11T23:00:00.000Z</published>
+    <updated>2025-09-13T09:44:54.570Z</updated>
+    
+    <content type="html"><![CDATA[<p>This site is built with <strong>Hexo</strong> and the <strong>Icarus</strong> theme to share my research, projects, and reading notes.</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;This site is built with &lt;strong&gt;Hexo&lt;/strong&gt; and the &lt;strong&gt;Icarus&lt;/strong&gt; theme to share my research, projects, and reading notes.&lt;/p</summary>
+      
+    
+    
+    
+    <category term="blog" scheme="https://reda-touil.github.io/categories/blog/"/>
+    
+    
+    <category term="welcome" scheme="https://reda-touil.github.io/tags/welcome/"/>
+    
+    <category term="hexo" scheme="https://reda-touil.github.io/tags/hexo/"/>
+    
+    <category term="icarus" scheme="https://reda-touil.github.io/tags/icarus/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Eurobot 2025 — Autonomous Mobile Robot (ROS)</title>
+    <link href="https://reda-touil.github.io/2025/05/20/eurobot-2025-autonomy/"/>
+    <id>https://reda-touil.github.io/2025/05/20/eurobot-2025-autonomy/</id>
+    <published>2025-05-19T23:00:00.000Z</published>
+    <updated>2025-09-13T23:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>A fully <strong>ROS-based autonomous robot</strong> for <strong>Eurobot 2025</strong>.<br>We built a robust navigation stack with <strong>sensor fusion</strong> (wheel odometry + IMU), global&#x2F;local planning using <strong><code>move_base</code></strong>, and a <strong>custom perception package</strong> that aligns the robot precisely with the <strong>boîtes de conservation</strong> (storage boxes) that carry <strong>ArUco tags</strong> for fast, reliable docking. <span id="more"></span></p></blockquote><h2 id="System-overview"><a href="#System-overview" class="headerlink" title="System overview"></a>System overview</h2><ul><li><strong>OS &#x2F; Framework</strong>: Ubuntu + <strong>ROS</strong> (Noetic&#x2F;ROS1)</li><li><strong>Compute</strong>: Jetson Nano</li><li><strong>Sensors</strong>: Encoders (odometry), steppers, IMU, RGB camera for ArUco</li><li><strong>Actuation</strong>: 2-wheel differential drive + gripper&#x2F;mechanism</li></ul><hr><h2 id="Localization-sensor-fusion"><a href="#Localization-sensor-fusion" class="headerlink" title="Localization (sensor fusion)"></a>Localization (sensor fusion)</h2><p>We fuse <strong>wheel odometry</strong> and <strong>IMU</strong> with <strong><code>robot_localization</code></strong> (EKF).<br>This yields a stable <strong><code>/odometry/filtered</code></strong> and TF from <code>odom → base_link</code>.</p><hr><h2 id="Navigation-move-base"><a href="#Navigation-move-base" class="headerlink" title="Navigation (move_base)"></a>Navigation (<code>move_base</code>)</h2><ul><li><strong>Global planner</strong>: <code>navfn</code>  </li><li><strong>Local planner</strong>: <strong>TEB</strong> (<code>teb_local_planner</code>) for smooth, time-elastic trajectories.</li></ul><hr><h2 id="Perception-ArUco-alignment"><a href="#Perception-ArUco-alignment" class="headerlink" title="Perception (ArUco alignment)"></a>Perception (ArUco alignment)</h2><p>A lightweight node detects the <strong>ArUco</strong> tag on the <strong>boîte</strong>, estimates <code>T(base_link → tag)</code> with OpenCV, publishes a target pose in <code>map</code>, then sends a <code>move_base</code> goal.<br>For final centimeters, a short visual-servo velocity loop refines the pose.</p><hr><p><img src="/images/projects/eurobot-2025-autonomy/robot.jpg" alt="Robot"></p><h2 id="Big-Thanks-💙"><a href="#Big-Thanks-💙" class="headerlink" title="Big Thanks 💙"></a>Big Thanks 💙</h2><p>Sincere thanks to:</p><ul><li><strong>Talebot</strong> team — for the long nights, tests, and constant support.</li><li><strong>Ecole Nationale Polytechnique</strong> and all sponsors how aide this project.</li><li>Mentors, volunteers, and friends who gave feedback, tools, and encouragement.</li><li>Everyone following the project — your interest keeps us building!</li></ul><p><img src="/images/projects/eurobot-2025-autonomy/team.jpg" alt="Talebot team"></p>]]></content>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;A fully &lt;strong&gt;ROS-based autonomous robot&lt;/strong&gt; for &lt;strong&gt;Eurobot 2025&lt;/strong&gt;.&lt;br&gt;We built a robust navigation stack with &lt;strong&gt;sensor fusion&lt;/strong&gt; (wheel odometry + IMU), global&amp;#x2F;local planning using &lt;strong&gt;&lt;code&gt;move_base&lt;/code&gt;&lt;/strong&gt;, and a &lt;strong&gt;custom perception package&lt;/strong&gt; that aligns the robot precisely with the &lt;strong&gt;boîtes de conservation&lt;/strong&gt; (storage boxes) that carry &lt;strong&gt;ArUco tags&lt;/strong&gt; for fast, reliable docking.</summary>
+    
+    
+    
+    <category term="project" scheme="https://reda-touil.github.io/categories/project/"/>
+    
+    
+    <category term="Eurobot 2025" scheme="https://reda-touil.github.io/tags/Eurobot-2025/"/>
+    
+    <category term="ROS" scheme="https://reda-touil.github.io/tags/ROS/"/>
+    
+    <category term="robot_localization" scheme="https://reda-touil.github.io/tags/robot-localization/"/>
+    
+    <category term="EKF" scheme="https://reda-touil.github.io/tags/EKF/"/>
+    
+    <category term="IMU" scheme="https://reda-touil.github.io/tags/IMU/"/>
+    
+    <category term="odometry" scheme="https://reda-touil.github.io/tags/odometry/"/>
+    
+    <category term="move_base" scheme="https://reda-touil.github.io/tags/move-base/"/>
+    
+    <category term="navfn" scheme="https://reda-touil.github.io/tags/navfn/"/>
+    
+    <category term="teb_local_planner" scheme="https://reda-touil.github.io/tags/teb-local-planner/"/>
+    
+    <category term="ArUco" scheme="https://reda-touil.github.io/tags/ArUco/"/>
+    
+    <category term="perception" scheme="https://reda-touil.github.io/tags/perception/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Stereo ArUco Robot Posestimation — Eurobot 2025 Field Computer</title>
+    <link href="https://reda-touil.github.io/2025/01/15/aruco-stereo-tracking/"/>
+    <id>https://reda-touil.github.io/2025/01/15/aruco-stereo-tracking/</id>
+    <published>2025-01-14T23:00:00.000Z</published>
+    <updated>2025-09-13T23:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>A <strong>field-side tracking system</strong> that estimates each robot’s <strong>(x, y, yaw)</strong> in real time using a <span class="has-text-link">stereo pair of USB cameras</span> and <span class="has-text-danger">ArUco</span> markers. The map is anchored with <strong>four fixed markers</strong>; each robot carries one marker on the roof. This project is designed to act as the <strong>central compute</strong> (referee&#x2F;telemetry helper) for our <span class="has-text-danger">Eurobot 2025</span> team. <span id="more"></span></p></blockquote><h2 id="Goals"><a href="#Goals" class="headerlink" title="Goals"></a>Goals</h2><ul><li>Robust <strong>global pose</strong> for one or more robots: <strong>(x, y, θ)</strong>  </li><li>Simple, low-cost hardware (two USB cameras, off-the-shelf lenses)  </li><li>Quick setup at the venue and fast re-calibration when needed</li></ul><h2 id="Hardware"><a href="#Hardware" class="headerlink" title="Hardware"></a>Hardware</h2><ul><li><span class="has-text-primary has-text-weight-semibold">Stereo camera rig:</span> 2× USB cameras on a rigid bar with a fixed <strong>baseline</strong>  </li><li><span class="has-text-primary has-text-weight-semibold">Mounting:</span> Overlooking the game area (a small downward tilt is fine)  </li><li><span class="has-text-primary has-text-weight-semibold">Markers:</span>  <ul><li><strong>4× field markers</strong> at known field coordinates (map anchors)  </li><li><strong>1× marker per robot</strong> (top-mounted, high contrast)</li></ul></li></ul><h2 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h2><ol><li><p><strong>Stereo calibration</strong>  </p><ul><li>Calibrate each camera (<strong>intrinsics &amp; distortion</strong>) and the <strong>extrinsics</strong> between them.  </li><li>Use a chessboard (or ChArUco) and store <code>K1, D1, K2, D2, R, T</code>.  </li><li>Reference I used: this YouTube serie (clear and practical):<br><a href="https://www.youtube.com/playlist?list=PL2zRqk16wsdoCCLpou-dGo7QQNks1Ppzo">https://www.youtube.com/playlist?list=PL2zRqk16wsdoCCLpou-dGo7QQNks1Ppzo</a></li></ul></li><li><p><strong>ArUco detection</strong> (both images)  </p><ul><li>Detect <strong>field anchors</strong> and <strong>robot markers</strong> with <code>cv2.aruco.detectMarkers</code>.  </li><li>Estimate per-marker pose in each camera with <code>cv2.aruco.estimatePoseSingleMarkers</code>.</li></ul></li><li><p><strong>Map frame</strong>  </p><ul><li>With the four known <strong>field marker</strong> IDs and their world poses, compute or refresh the <strong>camera-to-world</strong> transform (PnP &#x2F; <code>solvePnP</code>; optionally average from multiple anchors).  </li><li>If desired, fuse left&#x2F;right views via stereo triangulation for extra robustness.</li></ul></li><li><p><strong>Robot pose</strong>  </p><ul><li>Transform the robot marker pose into the <strong>world (field) frame</strong> → <strong>(x, y, yaw)</strong>.  </li><li><strong>Yaw</strong> is extracted from the rotation vector (<code>rvec</code>) → rotation matrix → Z-yaw.</li></ul></li></ol><h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><ul><li>Stable tracking with <strong>centimeter-level repeatability</strong> on a 2×3 m field (after calibration)  </li><li><strong>Yaw</strong> is stable within a few degrees; larger markers and careful placement improve it  </li><li>Supports <strong>multiple robots</strong> simultaneously (distinct marker IDs)</li></ul><h2 id="Images-from-testing"><a href="#Images-from-testing" class="headerlink" title="Images from testing"></a>Images from testing</h2><p><img src="/images/projects/aruco-stereo-tracking/test.jpg" alt="Stereo ArUco tracking overlay"></p><h2 id="Next-steps"><a href="#Next-steps" class="headerlink" title="Next steps"></a>Next steps</h2><ul><li>Use a <strong>Jetson Nano</strong> instead of personal laptops as the field computer  </li><li>Leverage <strong>CUDA</strong> to parallelize heavy steps and reduce latency  </li><li>Optional: share robot&#x2F;world poses over <strong>Wi-Fi&#x2F;ROS</strong> so our robots know their own<br>position <em>and</em> the opponents’ positions in real time</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;A &lt;strong&gt;field-side tracking system&lt;/strong&gt; that estimates each robot’s &lt;strong&gt;(x, y, yaw)&lt;/strong&gt; in real time using a &lt;span class=&quot;has-text-link&quot;&gt;stereo pair of USB cameras&lt;/span&gt; and &lt;span class=&quot;has-text-danger&quot;&gt;ArUco&lt;/span&gt; markers. The map is anchored with &lt;strong&gt;four fixed markers&lt;/strong&gt;; each robot carries one marker on the roof. This project is designed to act as the &lt;strong&gt;central compute&lt;/strong&gt; (referee&amp;#x2F;telemetry helper) for our &lt;span class=&quot;has-text-danger&quot;&gt;Eurobot 2025&lt;/span&gt; team.</summary>
+    
+    
+    
+    <category term="project" scheme="https://reda-touil.github.io/categories/project/"/>
+    
+    
+    <category term="robotics" scheme="https://reda-touil.github.io/tags/robotics/"/>
+    
+    <category term="Eurobot 2025" scheme="https://reda-touil.github.io/tags/Eurobot-2025/"/>
+    
+    <category term="ArUco" scheme="https://reda-touil.github.io/tags/ArUco/"/>
+    
+    <category term="stereo vision" scheme="https://reda-touil.github.io/tags/stereo-vision/"/>
+    
+    <category term="pose estimation" scheme="https://reda-touil.github.io/tags/pose-estimation/"/>
+    
+    <category term="OpenCV" scheme="https://reda-touil.github.io/tags/OpenCV/"/>
+    
+    <category term="calibration" scheme="https://reda-touil.github.io/tags/calibration/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Ocean Cleaning Robot — Algerian Robot Cup 2024</title>
+    <link href="https://reda-touil.github.io/2024/07/20/ocean-cleaning-robot/"/>
+    <id>https://reda-touil.github.io/2024/07/20/ocean-cleaning-robot/</id>
+    <published>2024-07-19T23:00:00.000Z</published>
+    <updated>2025-09-13T23:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>Tele-operated robot built for the <span class="has-text-danger">Algerian Robot Cup (ARC) 2024</span> to collect <span class="has-text-link">floating waste</span> from water surfaces and deliver it to a collection zone. Reliable, easy to service between runs, and tuned for smooth operator control.</p></blockquote><span id="more"></span><h2 id="Competition-context"><a href="#Competition-context" class="headerlink" title="Competition context"></a>Competition context</h2><ul><li><span class="has-text-primary has-text-weight-semibold">Event:</span> Algerian Robot Cup (ARC) 2024  </li><li><span class="has-text-primary has-text-weight-semibold">Challenge:</span> Remove floating debris from a pool and deposit it in a target area within the time limit  </li><li><span class="has-text-primary has-text-weight-semibold">Location:</span> Algiers, Algeria  </li><li><span class="has-text-primary has-text-weight-semibold">Role:</span> Mechanical &amp; electronics design, integration, and driver</li></ul><h2 id="Mechanical-design"><a href="#Mechanical-design" class="headerlink" title="Mechanical design"></a>Mechanical design</h2><ul><li>Amphibious chassis that can traverse <strong>gravel</strong> and <strong>sand</strong> near the water’s edge and operate effectively on the water surface  </li><li>Wide funnel&#x2F;scoop guiding debris into a <strong>removable basket</strong> for fast turn-around  </li><li>Serviceability: quick-release modules and accessible wiring to minimize pit time</li></ul><h2 id="Electronics-control"><a href="#Electronics-control" class="headerlink" title="Electronics &amp; control"></a>Electronics &amp; control</h2><ul><li><span class="has-text-primary has-text-weight-semibold">Land drive:</span> 4× DC motors for traction on gravel and sand  </li><li><span class="has-text-primary has-text-weight-semibold">Water propulsion:</span> 2× brushless motors + ESCs for maneuvering in water  </li><li><span class="has-text-primary has-text-weight-semibold">Actuation:</span> high-torque servo for scoop angle; stepper motor to <strong>eject (throw)</strong> stacked dishes into the trash basket  </li><li><span class="has-text-primary has-text-weight-semibold">Tele-op link:</span> nRF24L01 2.4 GHz; tuned with input expo&#x2F;rate limiting for smooth control</li></ul><h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><ul><li>Consistent pickups across mixed debris sizes  </li><li><strong>Only team</strong> to pick multiple dishes, stack them on board, and then throw them all into the trash at once  </li><li>Drawback: the robot was <strong>heavy</strong>, so top speed was lower</li></ul><h2 id="Lessons-learned"><a href="#Lessons-learned" class="headerlink" title="Lessons learned"></a>Lessons learned</h2><ul><li>Reduce mass (lighter deck, optimized battery size, selective material swaps) to increase speed and maneuverability  </li><li>Improve sealing and splash protection around moving shafts and connectors  </li><li>Add voltage&#x2F;current telemetry to prevent late-match brownouts</li></ul><h2 id="Media"><a href="#Media" class="headerlink" title="Media"></a>Media</h2><p><img src="/images/projects/ocean-cleaning-robot/hero.jpg" alt="Ocean Cleaning Robot — ARC 2024"></p><p><em>Photo: Algerian Robot Cup (ARC) 2024.</em></p>]]></content>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;Tele-operated robot built for the &lt;span class=&quot;has-text-danger&quot;&gt;Algerian Robot Cup (ARC) 2024&lt;/span&gt; to collect &lt;span class=&quot;has-text-link&quot;&gt;floating waste&lt;/span&gt; from water surfaces and deliver it to a collection zone. Reliable, easy to service between runs, and tuned for smooth operator control.&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="project" scheme="https://reda-touil.github.io/categories/project/"/>
+    
+    
+    <category term="robotics" scheme="https://reda-touil.github.io/tags/robotics/"/>
+    
+    <category term="ARC 2024" scheme="https://reda-touil.github.io/tags/ARC-2024/"/>
+    
+    <category term="Algerian Robot Cup" scheme="https://reda-touil.github.io/tags/Algerian-Robot-Cup/"/>
+    
+    <category term="teleoperation" scheme="https://reda-touil.github.io/tags/teleoperation/"/>
+    
+    <category term="environment" scheme="https://reda-touil.github.io/tags/environment/"/>
+    
+    <category term="water" scheme="https://reda-touil.github.io/tags/water/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Line Follower / Maze Solver — Polymaze 2023</title>
+    <link href="https://reda-touil.github.io/2023/07/20/polymaze-2023/"/>
+    <id>https://reda-touil.github.io/2023/07/20/polymaze-2023/</id>
+    <published>2023-07-19T23:00:00.000Z</published>
+    <updated>2024-09-13T23:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>Autonomous line-following robot that detects intersections, maps the maze, then re-runs the <span class="has-text-link">shortest path</span>. Built for <span class="has-text-danger">Polymaze 2023</span>.</p></blockquote><span id="more"></span><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>The robot follows a black line using <strong>PID</strong> on an IR sensor array, detects <strong>nodes</strong> (R&#x2F;L&#x2F;T intersections, turns, and dead ends), saves the path to <strong>EEPROM</strong>, prunes wrong turns&#x2F;backtracks, then computes the <strong>shortest path</strong> and performs an optimized second run.</p><ul><li><span class="has-text-primary has-text-weight-semibold">Event:</span> Polymaze 2023  </li><li><span class="has-text-primary has-text-weight-semibold">Goal:</span> Fastest complete maze  </li><li><span class="has-text-primary has-text-weight-semibold">Role:</span> Design, control &amp; software</li></ul><h2 id="Hardware"><a href="#Hardware" class="headerlink" title="Hardware"></a>Hardware</h2><ul><li><span class="has-text-primary has-text-weight-semibold">Microcontroller:</span> Arduino Uno</li><li><span class="has-text-primary has-text-weight-semibold">Sensors:</span> 5-element IR array</li><li><span class="has-text-primary has-text-weight-semibold">Drive:</span> 2× DC motors + L298N driver</li><li><span class="has-text-primary has-text-weight-semibold">Power:</span> 3S LiPo</li><li><span class="has-text-primary has-text-weight-semibold">Chassis:</span> Laser-cut</li></ul><h2 id="Control-Sensing"><a href="#Control-Sensing" class="headerlink" title="Control &amp; Sensing"></a>Control &amp; Sensing</h2><p><strong>Line tracking (PID):</strong> proportional–integral–derivative control on the line error from the IR array.<br><strong>Node detection:</strong> state machine for junction types (R&#x2F;L&#x2F;T&#x2F;cross), debounced by distance&#x2F;time.<br><strong>Mapping:</strong> record moves as symbols (e.g., <code>L</code>, <code>R</code>, <code>S</code>, <code>B</code> for backtrack) in EEPROM.<br><strong>Path optimization:</strong> compress the sequence by removing backtrack pairs and simplifying to the minimal route for the second run.</p>]]></content>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;Autonomous line-following robot that detects intersections, maps the maze, then re-runs the &lt;span class=&quot;has-text-link&quot;&gt;shortest path&lt;/span&gt;. Built for &lt;span class=&quot;has-text-danger&quot;&gt;Polymaze 2023&lt;/span&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="project" scheme="https://reda-touil.github.io/categories/project/"/>
+    
+    
+    <category term="robotics" scheme="https://reda-touil.github.io/tags/robotics/"/>
+    
+    <category term="line follower" scheme="https://reda-touil.github.io/tags/line-follower/"/>
+    
+    <category term="maze" scheme="https://reda-touil.github.io/tags/maze/"/>
+    
+    <category term="embedded" scheme="https://reda-touil.github.io/tags/embedded/"/>
+    
+    <category term="polymaze" scheme="https://reda-touil.github.io/tags/polymaze/"/>
+    
+  </entry>
+  
+</feed>
