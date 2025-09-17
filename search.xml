@@ -100,6 +100,77 @@
       </tags>
   </entry>
   <entry>
+    <title>Eurobot 2025 — Autonomous Mobile Robot (ROS)</title>
+    <url>/2025/05/20/eurobot-2025-autonomy/</url>
+    <content><![CDATA[<blockquote>
+<p>A fully <strong>ROS-based autonomous robot</strong> for <strong>Eurobot 2025</strong>.<br>We built a robust navigation stack with <strong>sensor fusion</strong> (wheel odometry + IMU), global&#x2F;local planning using <strong><code>move_base</code></strong>, and a <strong>custom perception package</strong> that aligns the robot precisely with the <strong>boîtes de conservation</strong> (storage boxes) that carry <strong>ArUco tags</strong> for fast, reliable docking. <span id="more"></span></p>
+</blockquote>
+<h2 id="System-overview"><a href="#System-overview" class="headerlink" title="System overview"></a>System overview</h2><ul>
+<li><strong>OS &#x2F; Framework</strong>: Ubuntu + <strong>ROS</strong> (Noetic&#x2F;ROS1)</li>
+<li><strong>Compute</strong>: Jetson Nano</li>
+<li><strong>Sensors</strong>: Encoders (odometry), steppers, IMU, RGB camera for ArUco</li>
+<li><strong>Actuation</strong>: 2-wheel differential drive + gripper&#x2F;mechanism</li>
+</ul>
+<hr>
+<h2 id="Localization-sensor-fusion"><a href="#Localization-sensor-fusion" class="headerlink" title="Localization (sensor fusion)"></a>Localization (sensor fusion)</h2><p>We fuse <strong>wheel odometry</strong> and <strong>IMU</strong> with <strong><code>robot_localization</code></strong> (EKF).<br>This yields a stable <strong><code>/odometry/filtered</code></strong> and TF from <code>odom → base_link</code>.</p>
+<hr>
+<h2 id="Navigation-move-base"><a href="#Navigation-move-base" class="headerlink" title="Navigation (move_base)"></a>Navigation (<code>move_base</code>)</h2><ul>
+<li><strong>Global planner</strong>: <code>navfn</code>  </li>
+<li><strong>Local planner</strong>: <strong>TEB</strong> (<code>teb_local_planner</code>) for smooth, time-elastic trajectories.</li>
+</ul>
+<hr>
+<h2 id="Perception-ArUco-alignment"><a href="#Perception-ArUco-alignment" class="headerlink" title="Perception (ArUco alignment)"></a>Perception (ArUco alignment)</h2><p>A lightweight node detects the <strong>ArUco</strong> tag on the <strong>boîte</strong>, estimates <code>T(base_link → tag)</code> with OpenCV, publishes a target pose in <code>map</code>, then sends a <code>move_base</code> goal.<br>For final centimeters, a short visual-servo velocity loop refines the pose.</p>
+<hr>
+<p><img src="/images/projects/eurobot-2025-autonomy/robot.jpg" alt="Robot"></p>
+<h2 id="Big-Thanks-💙"><a href="#Big-Thanks-💙" class="headerlink" title="Big Thanks 💙"></a>Big Thanks 💙</h2><p>Sincere thanks to:</p>
+<ul>
+<li><strong>Talebot</strong> team — for the long nights, tests, and constant support.</li>
+<li><strong>Ecole Nationale Polytechnique</strong> and all sponsors how aide this project.</li>
+<li>Mentors, volunteers, and friends who gave feedback, tools, and encouragement.</li>
+<li>Everyone following the project — your interest keeps us building!</li>
+</ul>
+<p><img src="/images/projects/eurobot-2025-autonomy/team.jpg" alt="Talebot team"></p>
+]]></content>
+      <categories>
+        <category>project</category>
+      </categories>
+      <tags>
+        <tag>Eurobot 2025</tag>
+        <tag>ROS</tag>
+        <tag>robot_localization</tag>
+        <tag>EKF</tag>
+        <tag>IMU</tag>
+        <tag>odometry</tag>
+        <tag>move_base</tag>
+        <tag>navfn</tag>
+        <tag>teb_local_planner</tag>
+        <tag>ArUco</tag>
+        <tag>perception</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Demo Project — Real-Time Image Segmentation</title>
+    <url>/2025/09/14/demo-project/</url>
+    <content><![CDATA[<p>A short summary of the project. What it does, why it’s interesting, and the result.</p>
+<span id="more"></span>
+
+<h3 id="Highlights"><a href="#Highlights" class="headerlink" title="Highlights"></a>Highlights</h3><ul>
+<li>Lightweight PyTorch model</li>
+<li>Real-time inference on CPU</li>
+<li>Simple REST API wrapper</li>
+</ul>
+<h3 id="Tech-Stack"><a href="#Tech-Stack" class="headerlink" title="Tech Stack"></a>Tech Stack</h3><p>PyTorch · FastAPI · ONNX Runtime</p>
+]]></content>
+      <categories>
+        <category>project</category>
+      </categories>
+      <tags>
+        <tag>computer vision</tag>
+        <tag>pytorch</tag>
+        <tag>segmentation</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Stereo ArUco Robot Posestimation — Eurobot 2025 Field Computer</title>
     <url>/2025/01/15/aruco-stereo-tracking/</url>
     <content><![CDATA[<blockquote>
@@ -163,107 +234,12 @@
       </categories>
       <tags>
         <tag>Eurobot 2025</tag>
-        <tag>robotics</tag>
         <tag>ArUco</tag>
+        <tag>robotics</tag>
         <tag>stereo vision</tag>
         <tag>pose estimation</tag>
         <tag>OpenCV</tag>
         <tag>calibration</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Demo Project — Real-Time Image Segmentation</title>
-    <url>/2025/09/14/demo-project/</url>
-    <content><![CDATA[<p>A short summary of the project. What it does, why it’s interesting, and the result.</p>
-<span id="more"></span>
-
-<h3 id="Highlights"><a href="#Highlights" class="headerlink" title="Highlights"></a>Highlights</h3><ul>
-<li>Lightweight PyTorch model</li>
-<li>Real-time inference on CPU</li>
-<li>Simple REST API wrapper</li>
-</ul>
-<h3 id="Tech-Stack"><a href="#Tech-Stack" class="headerlink" title="Tech Stack"></a>Tech Stack</h3><p>PyTorch · FastAPI · ONNX Runtime</p>
-]]></content>
-      <categories>
-        <category>project</category>
-      </categories>
-      <tags>
-        <tag>computer vision</tag>
-        <tag>pytorch</tag>
-        <tag>segmentation</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Eurobot 2025 — Autonomous Mobile Robot (ROS)</title>
-    <url>/2025/05/20/eurobot-2025-autonomy/</url>
-    <content><![CDATA[<blockquote>
-<p>A fully <strong>ROS-based autonomous robot</strong> for <strong>Eurobot 2025</strong>.<br>We built a robust navigation stack with <strong>sensor fusion</strong> (wheel odometry + IMU), global&#x2F;local planning using <strong><code>move_base</code></strong>, and a <strong>custom perception package</strong> that aligns the robot precisely with the <strong>boîtes de conservation</strong> (storage boxes) that carry <strong>ArUco tags</strong> for fast, reliable docking. <span id="more"></span></p>
-</blockquote>
-<h2 id="System-overview"><a href="#System-overview" class="headerlink" title="System overview"></a>System overview</h2><ul>
-<li><strong>OS &#x2F; Framework</strong>: Ubuntu + <strong>ROS</strong> (Noetic&#x2F;ROS1)</li>
-<li><strong>Compute</strong>: Jetson Nano</li>
-<li><strong>Sensors</strong>: Encoders (odometry), steppers, IMU, RGB camera for ArUco</li>
-<li><strong>Actuation</strong>: 2-wheel differential drive + gripper&#x2F;mechanism</li>
-</ul>
-<hr>
-<h2 id="Localization-sensor-fusion"><a href="#Localization-sensor-fusion" class="headerlink" title="Localization (sensor fusion)"></a>Localization (sensor fusion)</h2><p>We fuse <strong>wheel odometry</strong> and <strong>IMU</strong> with <strong><code>robot_localization</code></strong> (EKF).<br>This yields a stable <strong><code>/odometry/filtered</code></strong> and TF from <code>odom → base_link</code>.</p>
-<hr>
-<h2 id="Navigation-move-base"><a href="#Navigation-move-base" class="headerlink" title="Navigation (move_base)"></a>Navigation (<code>move_base</code>)</h2><ul>
-<li><strong>Global planner</strong>: <code>navfn</code>  </li>
-<li><strong>Local planner</strong>: <strong>TEB</strong> (<code>teb_local_planner</code>) for smooth, time-elastic trajectories.</li>
-</ul>
-<hr>
-<h2 id="Perception-ArUco-alignment"><a href="#Perception-ArUco-alignment" class="headerlink" title="Perception (ArUco alignment)"></a>Perception (ArUco alignment)</h2><p>A lightweight node detects the <strong>ArUco</strong> tag on the <strong>boîte</strong>, estimates <code>T(base_link → tag)</code> with OpenCV, publishes a target pose in <code>map</code>, then sends a <code>move_base</code> goal.<br>For final centimeters, a short visual-servo velocity loop refines the pose.</p>
-<hr>
-<p><img src="/images/projects/eurobot-2025-autonomy/robot.jpg" alt="Robot"></p>
-<h2 id="Big-Thanks-💙"><a href="#Big-Thanks-💙" class="headerlink" title="Big Thanks 💙"></a>Big Thanks 💙</h2><p>Sincere thanks to:</p>
-<ul>
-<li><strong>Talebot</strong> team — for the long nights, tests, and constant support.</li>
-<li><strong>Ecole Nationale Polytechnique</strong> and all sponsors how aide this project.</li>
-<li>Mentors, volunteers, and friends who gave feedback, tools, and encouragement.</li>
-<li>Everyone following the project — your interest keeps us building!</li>
-</ul>
-<p><img src="/images/projects/eurobot-2025-autonomy/team.jpg" alt="Talebot team"></p>
-]]></content>
-      <categories>
-        <category>project</category>
-      </categories>
-      <tags>
-        <tag>Eurobot 2025</tag>
-        <tag>ArUco</tag>
-        <tag>ROS</tag>
-        <tag>robot_localization</tag>
-        <tag>EKF</tag>
-        <tag>IMU</tag>
-        <tag>odometry</tag>
-        <tag>move_base</tag>
-        <tag>navfn</tag>
-        <tag>teb_local_planner</tag>
-        <tag>perception</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Essay: Why Imperfect Action Beats Perfect Inaction</title>
-    <url>/2025/09/12/first-essay/</url>
-    <content><![CDATA[<p>Your essay text…</p>
-]]></content>
-      <categories>
-        <category>essay</category>
-      </categories>
-      <tags>
-        <tag>thoughts</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Reading Notes: A Paper I Like</title>
-    <url>/2025/09/12/first-reading/</url>
-    <content><![CDATA[<p>Your reading notes…</p>
-]]></content>
-      <categories>
-        <category>reading</category>
-      </categories>
-      <tags>
-        <tag>notes</tag>
       </tags>
   </entry>
   <entry>
@@ -283,6 +259,18 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>Reading Notes: A Paper I Like</title>
+    <url>/2025/09/12/first-reading/</url>
+    <content><![CDATA[<p>Your reading notes…</p>
+]]></content>
+      <categories>
+        <category>reading</category>
+      </categories>
+      <tags>
+        <tag>notes</tag>
+      </tags>
   </entry>
   <entry>
     <title>Ocean Cleaning Robot — Algerian Robot Cup 2024</title>
@@ -366,6 +354,18 @@
         <tag>maze</tag>
         <tag>embedded</tag>
         <tag>polymaze</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Essay: Why Imperfect Action Beats Perfect Inaction</title>
+    <url>/2025/09/12/first-essay/</url>
+    <content><![CDATA[<p>Your essay text…</p>
+]]></content>
+      <categories>
+        <category>essay</category>
+      </categories>
+      <tags>
+        <tag>thoughts</tag>
       </tags>
   </entry>
   <entry>

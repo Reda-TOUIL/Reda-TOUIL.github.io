@@ -122,31 +122,6 @@
   </entry>
   
   <entry>
-    <title>Essay: Why Imperfect Action Beats Perfect Inaction</title>
-    <link href="https://reda-touil.github.io/2025/09/12/first-essay/"/>
-    <id>https://reda-touil.github.io/2025/09/12/first-essay/</id>
-    <published>2025-09-11T23:00:00.000Z</published>
-    <updated>2025-09-13T00:01:57.461Z</updated>
-    
-    <content type="html"><![CDATA[<p>Your essay text…</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;Your essay text…&lt;/p&gt;
-</summary>
-      
-    
-    
-    
-    <category term="essay" scheme="https://reda-touil.github.io/categories/essay/"/>
-    
-    
-    <category term="thoughts" scheme="https://reda-touil.github.io/tags/thoughts/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Reading Notes: A Paper I Like</title>
     <link href="https://reda-touil.github.io/2025/09/12/first-reading/"/>
     <id>https://reda-touil.github.io/2025/09/12/first-reading/</id>
@@ -168,6 +143,31 @@
     
     
     <category term="notes" scheme="https://reda-touil.github.io/tags/notes/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Essay: Why Imperfect Action Beats Perfect Inaction</title>
+    <link href="https://reda-touil.github.io/2025/09/12/first-essay/"/>
+    <id>https://reda-touil.github.io/2025/09/12/first-essay/</id>
+    <published>2025-09-11T23:00:00.000Z</published>
+    <updated>2025-09-13T00:01:57.461Z</updated>
+    
+    <content type="html"><![CDATA[<p>Your essay text…</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Your essay text…&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="essay" scheme="https://reda-touil.github.io/categories/essay/"/>
+    
+    
+    <category term="thoughts" scheme="https://reda-touil.github.io/tags/thoughts/"/>
     
   </entry>
   
@@ -219,8 +219,6 @@
     
     <category term="Eurobot 2025" scheme="https://reda-touil.github.io/tags/Eurobot-2025/"/>
     
-    <category term="ArUco" scheme="https://reda-touil.github.io/tags/ArUco/"/>
-    
     <category term="ROS" scheme="https://reda-touil.github.io/tags/ROS/"/>
     
     <category term="robot_localization" scheme="https://reda-touil.github.io/tags/robot-localization/"/>
@@ -236,6 +234,8 @@
     <category term="navfn" scheme="https://reda-touil.github.io/tags/navfn/"/>
     
     <category term="teb_local_planner" scheme="https://reda-touil.github.io/tags/teb-local-planner/"/>
+    
+    <category term="ArUco" scheme="https://reda-touil.github.io/tags/ArUco/"/>
     
     <category term="perception" scheme="https://reda-touil.github.io/tags/perception/"/>
     
@@ -261,9 +261,9 @@
     
     <category term="Eurobot 2025" scheme="https://reda-touil.github.io/tags/Eurobot-2025/"/>
     
-    <category term="robotics" scheme="https://reda-touil.github.io/tags/robotics/"/>
-    
     <category term="ArUco" scheme="https://reda-touil.github.io/tags/ArUco/"/>
+    
+    <category term="robotics" scheme="https://reda-touil.github.io/tags/robotics/"/>
     
     <category term="stereo vision" scheme="https://reda-touil.github.io/tags/stereo-vision/"/>
     
