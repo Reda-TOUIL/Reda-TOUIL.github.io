@@ -71,6 +71,37 @@
   </entry>
   
   <entry>
+    <title>Sniffing Network Traffic</title>
+    <link href="https://reda-touil.github.io/2025/09/14/sniffing-network-traffic/"/>
+    <id>https://reda-touil.github.io/2025/09/14/sniffing-network-traffic/</id>
+    <published>2025-09-13T23:00:00.000Z</published>
+    <updated>2025-09-13T23:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>Read this first</strong>: Monitoring or intercepting traffic that <strong>isn’t yours</strong> (or without <strong>clear written consent</strong>) is <span class="has-text-danger">illegal and unethical</span>. This post is a <span class="has-text-link">defensive, educational</span> overview. Try things only on your <span class="has-text-success">own devices</span> or in a closed lab you control.</p><h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><ul><li>You can learn a lot by capturing <strong>your own device’s traffic</strong> with <span class="has-text-link">Wireshark</span>.</li><li>Sniffing other people’s traffic on modern switched Wi‑Fi&#x2F;LANs is <strong>not trivial</strong> and typically requires a <span class="has-text-danger">man‑in‑the‑middle (MITM)</span> position (e.g., ARP spoofing) — that’s an <span class="has-text-danger">attack</span>. I won’t publish step‑by‑step exploit commands here.</li><li>The most useful takeaway: understand what metadata is visible, why <span class="has-text-link">encryption (HTTPS&#x2F;TLS)</span> matters, and how to <span class="has-text-success">defend</span> against MITM.</li></ul><hr><h2 id="The-setup-safe-legal"><a href="#The-setup-safe-legal" class="headerlink" title="The setup (safe, legal)"></a>The setup (safe, legal)</h2><p>Create a tiny lab:</p><ul><li>One laptop&#x2F;desktop (your machine)</li><li>Optional: a second device you also own (phone&#x2F;tablet)</li><li>Both connected to your home router or a separate test AP</li></ul><p>Install tools:</p><ul><li><strong>Wireshark</strong> – packet capture &amp; analysis</li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install wireshark</span><br></pre></td></tr></table></figure><ul><li><strong>Nmap</strong> – inventory devices <strong>you own</strong> on your test subnet</li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install nmap</span><br></pre></td></tr></table></figure><ul><li><strong>Eettercap</strong></li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install ettercap-text-only</span><br></pre></td></tr></table></figure><hr><h2 id="Why-sniffing-is-hard-on-real-networks"><a href="#Why-sniffing-is-hard-on-real-networks" class="headerlink" title="Why sniffing is hard on real networks"></a>Why sniffing is hard on real networks</h2><p>Old hubs echoed every frame to every port — trivially sniffable. Today’s <strong>switches</strong> forward frames only to the destination MAC, so your NIC generally sees <strong>only</strong></p><ul><li>your own traffic, and</li><li>broadcast&#x2F;multicast (e.g., ARP, mDNS, DHCP).</li></ul><p>To see someone else’s traffic, an attacker would need to sit <strong>in the middle</strong> (MITM). A common technique is <strong>ARP spoofing&#x2F;poisoning</strong>: trick hosts into sending frames to the attacker by lying about the MAC address for a given IP. This is explicitly malicious and out of scope here.</p><hr><h2 id="Capture-your-own-traffic-with-Wireshark"><a href="#Capture-your-own-traffic-with-Wireshark" class="headerlink" title="Capture your own traffic with Wireshark"></a>Capture <em>your own</em> traffic with Wireshark</h2><ol><li>Open Wireshark → select your active interface (e.g., <code>wlo1</code> for Wi‑Fi).</li><li>Start capture and browse a few websites, open an app, etc.</li><li>Stop capture and explore.</li></ol><h3 id="Useful-display-filters"><a href="#Useful-display-filters" class="headerlink" title="Useful display filters"></a>Useful display filters</h3><ul><li><code>http</code> – legacy HTTP (rare nowadays)</li><li><code>tls</code> – TLS handshake and encrypted application data</li><li><code>dns</code> – classic DNS queries (if not using DoH&#x2F;DoT)</li><li><code>tcp.port == 443</code> – most HTTPS traffic</li><li><code>ip.addr == &lt;your_phone_ip&gt;</code> – focus on a specific device in your <strong>lab</strong></li></ul><blockquote><p>Tip: Right‑click a packet → <strong>Follow → TCP&#x2F;UDP stream</strong>. If the app uses TLS, you’ll see encrypted bytes. You can still learn who talks to whom (SNI&#x2F;Server IP, cert info) without seeing the content.</p></blockquote><hr><h2 id="High‑level-How-attackers-try-to-see-others’-traffic"><a href="#High‑level-How-attackers-try-to-see-others’-traffic" class="headerlink" title="(High‑level) How attackers try to see others’ traffic"></a>(High‑level) How attackers try to see others’ traffic</h2><p>I won’t include exploitation commands, but conceptually:</p><ol><li><strong>Discovery</strong>: find devices on the subnet.</li><li><strong>Positioning</strong>: become the gateway for a victim and&#x2F;or the router (e.g., ARP spoofing) to proxy traffic.</li><li><strong>Inspection&#x2F;Modification</strong>: sniff or alter frames while forwarding.</li></ol><p>This is illegal without explicit permission. Instead, focus on the <strong>defenses</strong> below.</p><hr><h2 id="Quick-safe-commands-reference"><a href="#Quick-safe-commands-reference" class="headerlink" title="Quick, safe commands reference"></a>Quick, safe commands reference</h2><p>These are fine to run on <strong>your own lab</strong> only:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># List interfaces and IPs</span></span><br><span class="line">ip a</span><br><span class="line"></span><br><span class="line"><span class="comment"># Inventory your *own* test subnet</span></span><br><span class="line">nmap -sn 192.168.1.0/24   <span class="comment"># replace with your lab range</span></span><br></pre></td></tr></table></figure><p><img src="/images/blog/sniffing/nmap.png" alt="Nmap scan of my lab subnet"></p><hr><h2 id="About-MITM-Ettercap-why-details-are-redacted"><a href="#About-MITM-Ettercap-why-details-are-redacted" class="headerlink" title="About MITM&#x2F;Ettercap (why details are redacted)"></a>About MITM&#x2F;Ettercap (why details are redacted)</h2><p>Placing yourself <em>in the middle</em> of other devices’ traffic requires ARP spoofing or similar techniques. Sharing the exact commands would enable harm, so I’m keeping this section <strong>high‑level and defensive</strong>. If you’re doing an <strong>authorized</strong> lab or pentest, consult official docs and get written permission first. Below is an example CLI <strong>output</strong> from a controlled lab run for educational discussion:</p><p><img src="/images/blog/sniffing/output.png"></p><hr><h2 id="Inspect-traffic-with-Wireshark"><a href="#Inspect-traffic-with-Wireshark" class="headerlink" title="Inspect traffic with Wireshark"></a>Inspect traffic with Wireshark</h2><p>Start Wireshark and select your interface:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> wireshark</span><br></pre></td></tr></table></figure><p>Select the <code>wlo1</code> interface to start capturing:</p><p><img src="/images/blog/sniffing/wlo1.png"></p><p>You’ll see traffic like this:</p><p><img src="/images/blog/sniffing/traffic.png"></p><p>Apply a display filter to focus on a specific device (example):</p><p><img src="/images/blog/sniffing/filter.png"></p><p>Follow a UDP stream (conversation):</p><p><img src="/images/blog/sniffing/trafic.png"></p><p>You’ll notice the payload is unreadable — it’s <strong>encrypted</strong> (good!).<br>Red &#x3D; client; Blue &#x3D; server.</p><blockquote><p>Note: Not all traffic is encrypted. Legacy <code>http://</code> sites and some IoT protocols may still be in clear text — treat that as sensitive and remediate.</p></blockquote><hr><h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul><li>Wireshark User’s Guide — <a href="https://www.wireshark.org/docs/wsug_html_chunked/">https://www.wireshark.org/docs/wsug_html_chunked&#x2F;</a></li><li>NetworkChuck: <a href="https://www.youtube.com/watch?v=-rSqbgI7oZM&t=315s">https://www.youtube.com/watch?v=-rSqbgI7oZM&amp;t=315s</a></li></ul>]]></content>
+    
+    
+    <summary type="html">Read this first: Monitoring or intercepting traffic that isn’t yours (or without clear written consent) is illegal and unethical. This post is a defensive, educational overview. Try things only on your own devices or in a closed lab you control.</summary>
+    
+    
+    
+    <category term="blog" scheme="https://reda-touil.github.io/categories/blog/"/>
+    
+    
+    <category term="networking" scheme="https://reda-touil.github.io/tags/networking/"/>
+    
+    <category term="Wireshark" scheme="https://reda-touil.github.io/tags/Wireshark/"/>
+    
+    <category term="security" scheme="https://reda-touil.github.io/tags/security/"/>
+    
+    <category term="ARP" scheme="https://reda-touil.github.io/tags/ARP/"/>
+    
+    <category term="encryption" scheme="https://reda-touil.github.io/tags/encryption/"/>
+    
+    <category term="privacy" scheme="https://reda-touil.github.io/tags/privacy/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Hello World</title>
     <link href="https://reda-touil.github.io/2025/09/13/hello-world/"/>
     <id>https://reda-touil.github.io/2025/09/13/hello-world/</id>
@@ -188,6 +219,8 @@
     
     <category term="Eurobot 2025" scheme="https://reda-touil.github.io/tags/Eurobot-2025/"/>
     
+    <category term="ArUco" scheme="https://reda-touil.github.io/tags/ArUco/"/>
+    
     <category term="ROS" scheme="https://reda-touil.github.io/tags/ROS/"/>
     
     <category term="robot_localization" scheme="https://reda-touil.github.io/tags/robot-localization/"/>
@@ -203,8 +236,6 @@
     <category term="navfn" scheme="https://reda-touil.github.io/tags/navfn/"/>
     
     <category term="teb_local_planner" scheme="https://reda-touil.github.io/tags/teb-local-planner/"/>
-    
-    <category term="ArUco" scheme="https://reda-touil.github.io/tags/ArUco/"/>
     
     <category term="perception" scheme="https://reda-touil.github.io/tags/perception/"/>
     
@@ -228,9 +259,9 @@
     <category term="project" scheme="https://reda-touil.github.io/categories/project/"/>
     
     
-    <category term="robotics" scheme="https://reda-touil.github.io/tags/robotics/"/>
-    
     <category term="Eurobot 2025" scheme="https://reda-touil.github.io/tags/Eurobot-2025/"/>
+    
+    <category term="robotics" scheme="https://reda-touil.github.io/tags/robotics/"/>
     
     <category term="ArUco" scheme="https://reda-touil.github.io/tags/ArUco/"/>
     
