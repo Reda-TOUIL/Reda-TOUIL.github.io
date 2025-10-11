@@ -175,7 +175,7 @@
     <title>SurgXR — 3D Organ Segmentation &amp; XR Surgical Planning</title>
     <url>/2025/09/14/demo-project/</url>
     <content><![CDATA[<blockquote>
-<p><strong>SurgXR</strong> transforms <strong>CT scans into interactive 3D models</strong> for <strong>surgical planning in XR</strong>.<br>Built to enables faster, safer planning for complex liver and organ surgeries. <span id="more"></span></p>
+<p><span class="has-text-danger">SurgXR</span> transforms <span class="has-text-link">CT scans into interactive 3D models</span> for <span class="has-text-link">surgical planning in XR</span>.<br>Built to enables faster, safer planning for complex liver and organ surgeries. <span id="more"></span></p>
 </blockquote>
 <hr>
 <h2 id="Clinical-Problem"><a href="#Clinical-Problem" class="headerlink" title="Clinical Problem"></a>Clinical Problem</h2><p>Liver resections demand a detailed understanding of tumor–vessel relationships.<br>Conventional 2D CT forces mental 3D reconstruction, increasing planning time and margin uncertainty.</p>
