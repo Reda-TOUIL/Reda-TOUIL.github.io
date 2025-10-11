@@ -101,7 +101,7 @@
   </url>
   
   <url>
-    <loc>https://reda-touil.github.io/contact/index.html</loc>
+    <loc>https://reda-touil.github.io/404.html</loc>
     
     <lastmod>2025-09-13</lastmod>
     
@@ -110,7 +110,7 @@
   </url>
   
   <url>
-    <loc>https://reda-touil.github.io/404.html</loc>
+    <loc>https://reda-touil.github.io/contact/index.html</loc>
     
     <lastmod>2025-09-13</lastmod>
     
@@ -308,15 +308,6 @@
   </url>
   
   <url>
-    <loc>https://reda-touil.github.io/publications/index.html</loc>
-    
-    <lastmod>2025-09-12</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://reda-touil.github.io/photography/index.html</loc>
     
     <lastmod>2025-09-12</lastmod>
@@ -335,9 +326,27 @@
   </url>
   
   <url>
+    <loc>https://reda-touil.github.io/publications/index.html</loc>
+    
+    <lastmod>2025-09-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://reda-touil.github.io/2023/07/20/polymaze-2023/</loc>
     
     <lastmod>2024-09-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://reda-touil.github.io/2024/06/11/league-african-robotics/</loc>
+    
+    <lastmod>2024-06-10</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -556,6 +565,27 @@
   </url>
   
   <url>
+    <loc>https://reda-touil.github.io/tags/line-follower/</loc>
+    <lastmod>2025-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://reda-touil.github.io/tags/teleop/</loc>
+    <lastmod>2025-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://reda-touil.github.io/tags/competition/</loc>
+    <lastmod>2025-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://reda-touil.github.io/tags/ARC-2024/</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
@@ -619,27 +649,6 @@
   </url>
   
   <url>
-    <loc>https://reda-touil.github.io/tags/welcome/</loc>
-    <lastmod>2025-10-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://reda-touil.github.io/tags/hexo/</loc>
-    <lastmod>2025-10-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://reda-touil.github.io/tags/icarus/</loc>
-    <lastmod>2025-10-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://reda-touil.github.io/tags/networking/</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
@@ -676,6 +685,27 @@
   
   <url>
     <loc>https://reda-touil.github.io/tags/privacy/</loc>
+    <lastmod>2025-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://reda-touil.github.io/tags/welcome/</loc>
+    <lastmod>2025-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://reda-touil.github.io/tags/hexo/</loc>
+    <lastmod>2025-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://reda-touil.github.io/tags/icarus/</loc>
     <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
