@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://reda-touil.github.io/2025/09/14/demo-project/</loc>
+    
+    <lastmod>2025-10-10</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://reda-touil.github.io/index.html</loc>
+    
+    <lastmod>2025-09-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://reda-touil.github.io/curriculum/index.html</loc>
     
     <lastmod>2025-09-17</lastmod>
@@ -21,15 +39,6 @@
   
   <url>
     <loc>https://reda-touil.github.io/2025/01/15/aruco-stereo-tracking/</loc>
-    
-    <lastmod>2025-09-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://reda-touil.github.io/2025/09/14/demo-project/</loc>
     
     <lastmod>2025-09-13</lastmod>
     
@@ -84,15 +93,6 @@
   
   <url>
     <loc>https://reda-touil.github.io/2025/09/12/welcome/</loc>
-    
-    <lastmod>2025-09-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://reda-touil.github.io/index.html</loc>
     
     <lastmod>2025-09-13</lastmod>
     
@@ -308,7 +308,7 @@
   </url>
   
   <url>
-    <loc>https://reda-touil.github.io/photography/index.html</loc>
+    <loc>https://reda-touil.github.io/publications/index.html</loc>
     
     <lastmod>2025-09-12</lastmod>
     
@@ -317,7 +317,7 @@
   </url>
   
   <url>
-    <loc>https://reda-touil.github.io/publications/index.html</loc>
+    <loc>https://reda-touil.github.io/photography/index.html</loc>
     
     <lastmod>2025-09-12</lastmod>
     
@@ -346,7 +346,7 @@
 
   <url>
     <loc>https://reda-touil.github.io/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -354,308 +354,329 @@
   
   <url>
     <loc>https://reda-touil.github.io/tags/MCP/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/Model-Context-Protocol/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/LLM/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/tools/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/context/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/Eurobot-2025/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/robotics/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/ArUco/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/stereo-vision/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/pose-estimation/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/OpenCV/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/calibration/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://reda-touil.github.io/tags/computer-vision/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <loc>https://reda-touil.github.io/tags/Medical-Imaging/</loc>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://reda-touil.github.io/tags/pytorch/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <loc>https://reda-touil.github.io/tags/XR/</loc>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://reda-touil.github.io/tags/segmentation/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <loc>https://reda-touil.github.io/tags/3D-Segmentation/</loc>
+    <lastmod>2025-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://reda-touil.github.io/tags/Unity/</loc>
+    <lastmod>2025-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://reda-touil.github.io/tags/Deep-Learning/</loc>
+    <lastmod>2025-10-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://reda-touil.github.io/tags/Startup/</loc>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/ROS/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/robot-localization/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/EKF/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/IMU/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/odometry/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/move-base/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/navfn/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/teb-local-planner/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/perception/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/thoughts/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/notes/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/ARC-2024/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/Algerian-Robot-Cup/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/teleoperation/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/environment/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/water/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/line-follower/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/maze/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/embedded/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/polymaze/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/networking/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/Wireshark/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/security/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/ARP/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/encryption/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/privacy/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/welcome/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/hexo/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/tags/icarus/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -664,28 +685,28 @@
   
   <url>
     <loc>https://reda-touil.github.io/categories/blog/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/categories/project/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/categories/essay/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://reda-touil.github.io/categories/reading/</loc>
-    <lastmod>2025-09-17</lastmod>
+    <lastmod>2025-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

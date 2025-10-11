@@ -1,0 +1,24 @@
+/* Make the profile widget avatar circular */
+.widget-profile img,
+.widget .profile img,
+.card-widget .avatar img,
+.profile .avatar img {
+  border-radius: 50% !important;  /* circle */
+  aspect-ratio: 1 / 1;            /* force square box */
+  width: 160px;                    /* adjust as you like */
+  height: 160px;                   /* keeps it perfectly round */
+  object-fit: cover;               /* crop to center nicely */
+  box-shadow: 0 0 0 4px var(--card-bg, #fff); /* subtle white ring */
+}
+
+/* Tweak size on small screens */
+@media (max-width: 480px) {
+  .widget-profile img,
+  .widget .profile img,
+  .card-widget .avatar img,
+  .profile .avatar img {
+    width: 120px;
+    height: 120px;
+  }
+}
+

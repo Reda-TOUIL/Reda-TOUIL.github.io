@@ -46,27 +46,34 @@
   </entry>
   
   <entry>
-    <title>Demo Project — Real-Time Image Segmentation</title>
+    <title>SurgXR — 3D Organ Segmentation &amp; XR Surgical Planning</title>
     <link href="https://reda-touil.github.io/2025/09/14/demo-project/"/>
     <id>https://reda-touil.github.io/2025/09/14/demo-project/</id>
     <published>2025-09-13T23:00:00.000Z</published>
-    <updated>2025-09-13T23:00:00.000Z</updated>
+    <updated>2025-10-10T23:00:00.000Z</updated>
     
-    <content type="html"><![CDATA[<p>A short summary of the project. What it does, why it’s interesting, and the result.</p><span id="more"></span><h3 id="Highlights"><a href="#Highlights" class="headerlink" title="Highlights"></a>Highlights</h3><ul><li>Lightweight PyTorch model</li><li>Real-time inference on CPU</li><li>Simple REST API wrapper</li></ul><h3 id="Tech-Stack"><a href="#Tech-Stack" class="headerlink" title="Tech Stack"></a>Tech Stack</h3><p>PyTorch · FastAPI · ONNX Runtime</p>]]></content>
+    <content type="html"><![CDATA[<blockquote><p><strong>SurgXR</strong> transforms <strong>CT scans into interactive 3D models</strong> for <strong>surgical planning in XR</strong>.<br>Built to enables faster, safer planning for complex liver and organ surgeries. <span id="more"></span></p></blockquote><hr><h2 id="Clinical-Problem"><a href="#Clinical-Problem" class="headerlink" title="Clinical Problem"></a>Clinical Problem</h2><p>Liver resections demand a detailed understanding of tumor–vessel relationships.<br>Conventional 2D CT forces mental 3D reconstruction, increasing planning time and margin uncertainty.</p><hr><h2 id="Our-Solution"><a href="#Our-Solution" class="headerlink" title="Our Solution"></a>Our Solution</h2><p>SurgXR provides:</p><ul><li><strong>Automatic 3D reconstruction</strong> of liver, tumors, and vessels from CT DICOM.</li><li><strong>Interactive desktop viewer</strong> for measurements and annotations.</li><li><strong>VR planning sessions</strong> using <strong>Meta Quest 3</strong>, enabling collaborative review of surgical approaches and margins.</li></ul><p><strong>Key differentiators:</strong></p><ul><li>Hospital data compliance (no cloud transfer).</li><li>Subscription in DZD, low total cost of ownership.</li><li>Case registry for continuous model improvement.</li></ul><hr><h2 id="System-Overview"><a href="#System-Overview" class="headerlink" title="System Overview"></a>System Overview</h2><table><thead><tr><th>Component</th><th>Description</th></tr></thead><tbody><tr><td><strong>Input</strong></td><td>CT scan (DICOM)</td></tr><tr><td><strong>Segmentation</strong></td><td>AI model for organ and tumor segmentation (PyTorch)</td></tr><tr><td><strong>3D Reconstruction</strong></td><td>Mesh generation and smoothing</td></tr><tr><td><strong>Viewer</strong></td><td>Unity-based desktop app</td></tr><tr><td><strong>XR Mode</strong></td><td>Multi-user planning via Meta Quest 3</td></tr></tbody></table><hr><h2 id="Tech-Stack"><a href="#Tech-Stack" class="headerlink" title="Tech Stack"></a>Tech Stack</h2><ul><li><strong>Deep Learning</strong>: PyTorch &#x2F; MONAI for segmentation  </li><li><strong>3D Reconstruction</strong>: Marching Cubes + MeshLab post-processing  </li><li><strong>XR Development</strong>: Unity + Meta XR SDK  </li><li><strong>Deployment</strong>: Windows + Linux viewer builds; optional hospital server mode</li></ul><hr><h2 id="Hardware-Setup"><a href="#Hardware-Setup" class="headerlink" title="Hardware Setup"></a>Hardware Setup</h2><ul><li>Intel i9 + RTX 3090 workstation  </li><li>Meta Quest 3 headsets (3 units)</li></ul><hr><h2 id="Workflow"><a href="#Workflow" class="headerlink" title="Workflow"></a>Workflow</h2><ol><li>Upload anonymized CT (DICOM).  </li><li>Automatic segmentation → liver, tumors, vessels.  </li><li>Review and refine if needed.  </li><li>Explore in desktop viewer or shared VR session.</li></ol><hr><h2 id="Impact"><a href="#Impact" class="headerlink" title="Impact"></a>Impact</h2><table><thead><tr><th>Before</th><th>With SurgXR</th></tr></thead><tbody><tr><td>2D slices, mental 3D</td><td>Ready 3D organ, tumors, vessels</td></tr><tr><td>60–90 min planning</td><td>20–30 min planning</td></tr><tr><td>Single-user planning</td><td>Multi-user VR session</td></tr><tr><td>Uncertain margins</td><td>Visualized, measurable margins</td></tr></tbody></table><ul><li><strong>Customer segments</strong>: hospitals, clinics, universities.  </li><li><strong>Value proposition</strong>: faster planning, safer surgery, collaborative XR.  </li><li><strong>Channels</strong>: demos, conferences, local partners.</li></ul><hr><p><img src="/images/projects/surgxr/team.jpg" alt="Demo"></p><hr><h2 id="Website"><a href="#Website" class="headerlink" title="Website"></a>Website</h2><p><strong>Website:</strong> <a href="https://surgxr.netlify.app/">https://surgxr.netlify.app/</a></p><hr><h2 id="Acknowledgements"><a href="#Acknowledgements" class="headerlink" title="Acknowledgements"></a>Acknowledgements</h2><p>Thanks to:</p><ul><li>ENP Incubator team and mentors.</li><li>Partner hospitals and clinicians who contributed pilot data.</li><li>The XR and AI developer community.</li></ul>]]></content>
     
     
-    <summary type="html">&lt;p&gt;A short summary of the project. What it does, why it’s interesting, and the result.&lt;/p&gt;</summary>
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;SurgXR&lt;/strong&gt; transforms &lt;strong&gt;CT scans into interactive 3D models&lt;/strong&gt; for &lt;strong&gt;surgical planning in XR&lt;/strong&gt;.&lt;br&gt;Built to enables faster, safer planning for complex liver and organ surgeries.</summary>
     
     
     
     <category term="project" scheme="https://reda-touil.github.io/categories/project/"/>
     
     
-    <category term="computer vision" scheme="https://reda-touil.github.io/tags/computer-vision/"/>
+    <category term="Medical Imaging" scheme="https://reda-touil.github.io/tags/Medical-Imaging/"/>
     
-    <category term="pytorch" scheme="https://reda-touil.github.io/tags/pytorch/"/>
+    <category term="XR" scheme="https://reda-touil.github.io/tags/XR/"/>
     
-    <category term="segmentation" scheme="https://reda-touil.github.io/tags/segmentation/"/>
+    <category term="3D Segmentation" scheme="https://reda-touil.github.io/tags/3D-Segmentation/"/>
+    
+    <category term="Unity" scheme="https://reda-touil.github.io/tags/Unity/"/>
+    
+    <category term="Deep Learning" scheme="https://reda-touil.github.io/tags/Deep-Learning/"/>
+    
+    <category term="Startup" scheme="https://reda-touil.github.io/tags/Startup/"/>
     
   </entry>
   
