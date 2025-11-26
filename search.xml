@@ -1,6 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Stereo ArUco Robot Posestimation — Eurobot 2025 Field Computer</title>
+    <url>/2025/01/15/aruco-stereo-tracking/</url>
+    <content><![CDATA[<blockquote>
+<p>A <strong>field-side tracking system</strong> that estimates each robot’s <strong>(x, y, yaw)</strong> in real time using a <span class="has-text-link">stereo pair of USB cameras</span> and <span class="has-text-danger">ArUco</span> markers. The map is anchored with <strong>four fixed markers</strong>; each robot carries one marker on the roof. This project is designed to act as the <strong>central compute</strong> (referee&#x2F;telemetry helper) for our <span class="has-text-danger">Eurobot 2025</span> team. <span id="more"></span></p>
+</blockquote>
+<h2 id="Goals"><a href="#Goals" class="headerlink" title="Goals"></a>Goals</h2><ul>
+<li>Robust <strong>global pose</strong> for one or more robots: <strong>(x, y, θ)</strong>  </li>
+<li>Simple, low-cost hardware (two USB cameras, off-the-shelf lenses)  </li>
+<li>Quick setup at the venue and fast re-calibration when needed</li>
+</ul>
+<h2 id="Hardware"><a href="#Hardware" class="headerlink" title="Hardware"></a>Hardware</h2><ul>
+<li><span class="has-text-primary has-text-weight-semibold">Stereo camera rig:</span> 2× USB cameras on a rigid bar with a fixed <strong>baseline</strong>  </li>
+<li><span class="has-text-primary has-text-weight-semibold">Mounting:</span> Overlooking the game area (a small downward tilt is fine)  </li>
+<li><span class="has-text-primary has-text-weight-semibold">Markers:</span>  <ul>
+<li><strong>4× field markers</strong> at known field coordinates (map anchors)  </li>
+<li><strong>1× marker per robot</strong> (top-mounted, high contrast)</li>
+</ul>
+</li>
+</ul>
+<h2 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h2><ol>
+<li><p><strong>Stereo calibration</strong>  </p>
+<ul>
+<li>Calibrate each camera (<strong>intrinsics &amp; distortion</strong>) and the <strong>extrinsics</strong> between them.  </li>
+<li>Use a chessboard (or ChArUco) and store <code>K1, D1, K2, D2, R, T</code>.  </li>
+<li>Reference I used: this YouTube serie (clear and practical):<br><a href="https://www.youtube.com/playlist?list=PL2zRqk16wsdoCCLpou-dGo7QQNks1Ppzo">https://www.youtube.com/playlist?list=PL2zRqk16wsdoCCLpou-dGo7QQNks1Ppzo</a></li>
+</ul>
+</li>
+<li><p><strong>ArUco detection</strong> (both images)  </p>
+<ul>
+<li>Detect <strong>field anchors</strong> and <strong>robot markers</strong> with <code>cv2.aruco.detectMarkers</code>.  </li>
+<li>Estimate per-marker pose in each camera with <code>cv2.aruco.estimatePoseSingleMarkers</code>.</li>
+</ul>
+</li>
+<li><p><strong>Map frame</strong>  </p>
+<ul>
+<li>With the four known <strong>field marker</strong> IDs and their world poses, compute or refresh the <strong>camera-to-world</strong> transform (PnP &#x2F; <code>solvePnP</code>; optionally average from multiple anchors).  </li>
+<li>If desired, fuse left&#x2F;right views via stereo triangulation for extra robustness.</li>
+</ul>
+</li>
+<li><p><strong>Robot pose</strong>  </p>
+<ul>
+<li>Transform the robot marker pose into the <strong>world (field) frame</strong> → <strong>(x, y, yaw)</strong>.  </li>
+<li><strong>Yaw</strong> is extracted from the rotation vector (<code>rvec</code>) → rotation matrix → Z-yaw.</li>
+</ul>
+</li>
+</ol>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><ul>
+<li>Stable tracking with <strong>centimeter-level repeatability</strong> on a 2×3 m field (after calibration)  </li>
+<li><strong>Yaw</strong> is stable within a few degrees; larger markers and careful placement improve it  </li>
+<li>Supports <strong>multiple robots</strong> simultaneously (distinct marker IDs)</li>
+</ul>
+<h2 id="Images-from-testing"><a href="#Images-from-testing" class="headerlink" title="Images from testing"></a>Images from testing</h2><p><img src="/images/projects/aruco-stereo-tracking/test.jpg" alt="Stereo ArUco tracking overlay"></p>
+<h2 id="Next-steps"><a href="#Next-steps" class="headerlink" title="Next steps"></a>Next steps</h2><ul>
+<li>Use a <strong>Jetson Nano</strong> instead of personal laptops as the field computer  </li>
+<li>Leverage <strong>CUDA</strong> to parallelize heavy steps and reduce latency  </li>
+<li>Optional: share robot&#x2F;world poses over <strong>Wi-Fi&#x2F;ROS</strong> so our robots know their own<br>position <em>and</em> the opponents’ positions in real time</li>
+</ul>
+]]></content>
+      <categories>
+        <category>project</category>
+      </categories>
+      <tags>
+        <tag>Eurobot 2025</tag>
+        <tag>robotics</tag>
+        <tag>ArUco</tag>
+        <tag>stereo vision</tag>
+        <tag>pose estimation</tag>
+        <tag>OpenCV</tag>
+        <tag>calibration</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Model Context Protocol (MCP)</title>
     <url>/2025/09/14/Model-Context-Protocol-MCP/</url>
     <content><![CDATA[<p>A Protocol for Simplifying LLM Application Development.</p>
@@ -97,78 +169,6 @@
         <tag>LLM</tag>
         <tag>tools</tag>
         <tag>context</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Stereo ArUco Robot Posestimation — Eurobot 2025 Field Computer</title>
-    <url>/2025/01/15/aruco-stereo-tracking/</url>
-    <content><![CDATA[<blockquote>
-<p>A <strong>field-side tracking system</strong> that estimates each robot’s <strong>(x, y, yaw)</strong> in real time using a <span class="has-text-link">stereo pair of USB cameras</span> and <span class="has-text-danger">ArUco</span> markers. The map is anchored with <strong>four fixed markers</strong>; each robot carries one marker on the roof. This project is designed to act as the <strong>central compute</strong> (referee&#x2F;telemetry helper) for our <span class="has-text-danger">Eurobot 2025</span> team. <span id="more"></span></p>
-</blockquote>
-<h2 id="Goals"><a href="#Goals" class="headerlink" title="Goals"></a>Goals</h2><ul>
-<li>Robust <strong>global pose</strong> for one or more robots: <strong>(x, y, θ)</strong>  </li>
-<li>Simple, low-cost hardware (two USB cameras, off-the-shelf lenses)  </li>
-<li>Quick setup at the venue and fast re-calibration when needed</li>
-</ul>
-<h2 id="Hardware"><a href="#Hardware" class="headerlink" title="Hardware"></a>Hardware</h2><ul>
-<li><span class="has-text-primary has-text-weight-semibold">Stereo camera rig:</span> 2× USB cameras on a rigid bar with a fixed <strong>baseline</strong>  </li>
-<li><span class="has-text-primary has-text-weight-semibold">Mounting:</span> Overlooking the game area (a small downward tilt is fine)  </li>
-<li><span class="has-text-primary has-text-weight-semibold">Markers:</span>  <ul>
-<li><strong>4× field markers</strong> at known field coordinates (map anchors)  </li>
-<li><strong>1× marker per robot</strong> (top-mounted, high contrast)</li>
-</ul>
-</li>
-</ul>
-<h2 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h2><ol>
-<li><p><strong>Stereo calibration</strong>  </p>
-<ul>
-<li>Calibrate each camera (<strong>intrinsics &amp; distortion</strong>) and the <strong>extrinsics</strong> between them.  </li>
-<li>Use a chessboard (or ChArUco) and store <code>K1, D1, K2, D2, R, T</code>.  </li>
-<li>Reference I used: this YouTube serie (clear and practical):<br><a href="https://www.youtube.com/playlist?list=PL2zRqk16wsdoCCLpou-dGo7QQNks1Ppzo">https://www.youtube.com/playlist?list=PL2zRqk16wsdoCCLpou-dGo7QQNks1Ppzo</a></li>
-</ul>
-</li>
-<li><p><strong>ArUco detection</strong> (both images)  </p>
-<ul>
-<li>Detect <strong>field anchors</strong> and <strong>robot markers</strong> with <code>cv2.aruco.detectMarkers</code>.  </li>
-<li>Estimate per-marker pose in each camera with <code>cv2.aruco.estimatePoseSingleMarkers</code>.</li>
-</ul>
-</li>
-<li><p><strong>Map frame</strong>  </p>
-<ul>
-<li>With the four known <strong>field marker</strong> IDs and their world poses, compute or refresh the <strong>camera-to-world</strong> transform (PnP &#x2F; <code>solvePnP</code>; optionally average from multiple anchors).  </li>
-<li>If desired, fuse left&#x2F;right views via stereo triangulation for extra robustness.</li>
-</ul>
-</li>
-<li><p><strong>Robot pose</strong>  </p>
-<ul>
-<li>Transform the robot marker pose into the <strong>world (field) frame</strong> → <strong>(x, y, yaw)</strong>.  </li>
-<li><strong>Yaw</strong> is extracted from the rotation vector (<code>rvec</code>) → rotation matrix → Z-yaw.</li>
-</ul>
-</li>
-</ol>
-<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><ul>
-<li>Stable tracking with <strong>centimeter-level repeatability</strong> on a 2×3 m field (after calibration)  </li>
-<li><strong>Yaw</strong> is stable within a few degrees; larger markers and careful placement improve it  </li>
-<li>Supports <strong>multiple robots</strong> simultaneously (distinct marker IDs)</li>
-</ul>
-<h2 id="Images-from-testing"><a href="#Images-from-testing" class="headerlink" title="Images from testing"></a>Images from testing</h2><p><img src="/images/projects/aruco-stereo-tracking/test.jpg" alt="Stereo ArUco tracking overlay"></p>
-<h2 id="Next-steps"><a href="#Next-steps" class="headerlink" title="Next steps"></a>Next steps</h2><ul>
-<li>Use a <strong>Jetson Nano</strong> instead of personal laptops as the field computer  </li>
-<li>Leverage <strong>CUDA</strong> to parallelize heavy steps and reduce latency  </li>
-<li>Optional: share robot&#x2F;world poses over <strong>Wi-Fi&#x2F;ROS</strong> so our robots know their own<br>position <em>and</em> the opponents’ positions in real time</li>
-</ul>
-]]></content>
-      <categories>
-        <category>project</category>
-      </categories>
-      <tags>
-        <tag>Eurobot 2025</tag>
-        <tag>robotics</tag>
-        <tag>ArUco</tag>
-        <tag>stereo vision</tag>
-        <tag>pose estimation</tag>
-        <tag>OpenCV</tag>
-        <tag>calibration</tag>
       </tags>
   </entry>
   <entry>
@@ -295,18 +295,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Essay: Why Imperfect Action Beats Perfect Inaction</title>
-    <url>/2025/09/12/first-essay/</url>
-    <content><![CDATA[<p>Your essay text…</p>
-]]></content>
-      <categories>
-        <category>essay</category>
-      </categories>
-      <tags>
-        <tag>thoughts</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Eurobot 2025 — Autonomous Mobile Robot (ROS)</title>
     <url>/2025/05/20/eurobot-2025-autonomy/</url>
     <content><![CDATA[<blockquote>
@@ -353,6 +341,18 @@
         <tag>navfn</tag>
         <tag>teb_local_planner</tag>
         <tag>perception</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Essay: Why Imperfect Action Beats Perfect Inaction</title>
+    <url>/2025/09/12/first-essay/</url>
+    <content><![CDATA[<p>Your essay text…</p>
+]]></content>
+      <categories>
+        <category>essay</category>
+      </categories>
+      <tags>
+        <tag>thoughts</tag>
       </tags>
   </entry>
   <entry>
@@ -463,6 +463,40 @@
       </tags>
   </entry>
   <entry>
+    <title>Line Follower / Maze Solver — Polymaze 2023</title>
+    <url>/2023/07/20/polymaze-2023/</url>
+    <content><![CDATA[<blockquote>
+<p>Autonomous line-following robot that detects intersections, maps the maze, then re-runs the <span class="has-text-link">shortest path</span>. Built for <span class="has-text-danger">Polymaze 2023</span>.</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>The robot follows a black line using <strong>PID</strong> on an IR sensor array, detects <strong>nodes</strong> (R&#x2F;L&#x2F;T intersections, turns, and dead ends), saves the path to <strong>EEPROM</strong>, prunes wrong turns&#x2F;backtracks, then computes the <strong>shortest path</strong> and performs an optimized second run.</p>
+<ul>
+<li><span class="has-text-primary has-text-weight-semibold">Event:</span> Polymaze 2023  </li>
+<li><span class="has-text-primary has-text-weight-semibold">Goal:</span> Fastest complete maze  </li>
+<li><span class="has-text-primary has-text-weight-semibold">Role:</span> Design, control &amp; software</li>
+</ul>
+<h2 id="Hardware"><a href="#Hardware" class="headerlink" title="Hardware"></a>Hardware</h2><ul>
+<li><span class="has-text-primary has-text-weight-semibold">Microcontroller:</span> Arduino Uno</li>
+<li><span class="has-text-primary has-text-weight-semibold">Sensors:</span> 5-element IR array</li>
+<li><span class="has-text-primary has-text-weight-semibold">Drive:</span> 2× DC motors + L298N driver</li>
+<li><span class="has-text-primary has-text-weight-semibold">Power:</span> 3S LiPo</li>
+<li><span class="has-text-primary has-text-weight-semibold">Chassis:</span> Laser-cut</li>
+</ul>
+<h2 id="Control-Sensing"><a href="#Control-Sensing" class="headerlink" title="Control &amp; Sensing"></a>Control &amp; Sensing</h2><p><strong>Line tracking (PID):</strong> proportional–integral–derivative control on the line error from the IR array.<br><strong>Node detection:</strong> state machine for junction types (R&#x2F;L&#x2F;T&#x2F;cross), debounced by distance&#x2F;time.<br><strong>Mapping:</strong> record moves as symbols (e.g., <code>L</code>, <code>R</code>, <code>S</code>, <code>B</code> for backtrack) in EEPROM.<br><strong>Path optimization:</strong> compress the sequence by removing backtrack pairs and simplifying to the minimal route for the second run.</p>
+]]></content>
+      <categories>
+        <category>project</category>
+      </categories>
+      <tags>
+        <tag>robotics</tag>
+        <tag>line follower</tag>
+        <tag>maze</tag>
+        <tag>embedded</tag>
+        <tag>polymaze</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Ocean Cleaning Robot — Algerian Robot Cup 2024</title>
     <url>/2024/07/20/ocean-cleaning-robot/</url>
     <content><![CDATA[<blockquote>
@@ -513,37 +547,17 @@
       </tags>
   </entry>
   <entry>
-    <title>Line Follower / Maze Solver — Polymaze 2023</title>
-    <url>/2023/07/20/polymaze-2023/</url>
-    <content><![CDATA[<blockquote>
-<p>Autonomous line-following robot that detects intersections, maps the maze, then re-runs the <span class="has-text-link">shortest path</span>. Built for <span class="has-text-danger">Polymaze 2023</span>.</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>The robot follows a black line using <strong>PID</strong> on an IR sensor array, detects <strong>nodes</strong> (R&#x2F;L&#x2F;T intersections, turns, and dead ends), saves the path to <strong>EEPROM</strong>, prunes wrong turns&#x2F;backtracks, then computes the <strong>shortest path</strong> and performs an optimized second run.</p>
-<ul>
-<li><span class="has-text-primary has-text-weight-semibold">Event:</span> Polymaze 2023  </li>
-<li><span class="has-text-primary has-text-weight-semibold">Goal:</span> Fastest complete maze  </li>
-<li><span class="has-text-primary has-text-weight-semibold">Role:</span> Design, control &amp; software</li>
-</ul>
-<h2 id="Hardware"><a href="#Hardware" class="headerlink" title="Hardware"></a>Hardware</h2><ul>
-<li><span class="has-text-primary has-text-weight-semibold">Microcontroller:</span> Arduino Uno</li>
-<li><span class="has-text-primary has-text-weight-semibold">Sensors:</span> 5-element IR array</li>
-<li><span class="has-text-primary has-text-weight-semibold">Drive:</span> 2× DC motors + L298N driver</li>
-<li><span class="has-text-primary has-text-weight-semibold">Power:</span> 3S LiPo</li>
-<li><span class="has-text-primary has-text-weight-semibold">Chassis:</span> Laser-cut</li>
-</ul>
-<h2 id="Control-Sensing"><a href="#Control-Sensing" class="headerlink" title="Control &amp; Sensing"></a>Control &amp; Sensing</h2><p><strong>Line tracking (PID):</strong> proportional–integral–derivative control on the line error from the IR array.<br><strong>Node detection:</strong> state machine for junction types (R&#x2F;L&#x2F;T&#x2F;cross), debounced by distance&#x2F;time.<br><strong>Mapping:</strong> record moves as symbols (e.g., <code>L</code>, <code>R</code>, <code>S</code>, <code>B</code> for backtrack) in EEPROM.<br><strong>Path optimization:</strong> compress the sequence by removing backtrack pairs and simplifying to the minimal route for the second run.</p>
+    <title>Welcome to Reda&#39;s Log Book</title>
+    <url>/2025/09/12/welcome/</url>
+    <content><![CDATA[<p>This site is built with <strong>Hexo</strong> and the <strong>Icarus</strong> theme to share my research, projects, and reading notes.</p>
 ]]></content>
       <categories>
-        <category>project</category>
+        <category>blog</category>
       </categories>
       <tags>
-        <tag>robotics</tag>
-        <tag>line follower</tag>
-        <tag>maze</tag>
-        <tag>embedded</tag>
-        <tag>polymaze</tag>
+        <tag>welcome</tag>
+        <tag>hexo</tag>
+        <tag>icarus</tag>
       </tags>
   </entry>
   <entry>
@@ -647,20 +661,6 @@
         <tag>ARP</tag>
         <tag>encryption</tag>
         <tag>privacy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Welcome to Reda&#39;s Log Book</title>
-    <url>/2025/09/12/welcome/</url>
-    <content><![CDATA[<p>This site is built with <strong>Hexo</strong> and the <strong>Icarus</strong> theme to share my research, projects, and reading notes.</p>
-]]></content>
-      <categories>
-        <category>blog</category>
-      </categories>
-      <tags>
-        <tag>welcome</tag>
-        <tag>hexo</tag>
-        <tag>icarus</tag>
       </tags>
   </entry>
 </search>

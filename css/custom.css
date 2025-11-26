@@ -2,7 +2,8 @@
 .widget-profile img,
 .widget .profile img,
 .card-widget .avatar img,
-.profile .avatar img {
+.profile .avatar img,
+img.avatar {
   border-radius: 50% !important;  /* circle */
   aspect-ratio: 1 / 1;            /* force square box */
   width: 160px;                    /* adjust as you like */
@@ -16,10 +17,10 @@
   .widget-profile img,
   .widget .profile img,
   .card-widget .avatar img,
-  .profile .avatar img {
+  .profile .avatar img,
+  img.avatar {
     width: 120px;
     height: 120px;
   }
 }
-
 
